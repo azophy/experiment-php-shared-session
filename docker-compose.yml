@@ -1,6 +1,8 @@
 services:
   web_ci:
-    image: php:7.2-apache
+    build:
+      context: ./codeigniter
+      dockerfile: ./Dockerfile
     ports:
       - 8000:80
     env_file:
