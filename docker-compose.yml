@@ -1,0 +1,9 @@
+services:
+  web_ci:
+    image: php:7.2-apache
+    ports:
+      - 8000:80
+    env_file:
+      - .env
+    volumes:
+      - ./codeigniter:/var/www/html
