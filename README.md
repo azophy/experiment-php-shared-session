@@ -23,10 +23,12 @@ All services managed using docker compose
 ## Plan
 
 From my limited research, it seems that there are a couple of steps required to achieve this goal:
-- use the same backend for session driver in each frameworks, here we use Redis -> trivial
+- use the same backend for session driver in each frameworks, here we use Redis -> done
 - use the same Redis key format -> should be configurable, need to make sure
-- use the same serialization key -> require considerable configuration
+  - laravel has `database.redis.prefix` config var which could be changed to edit its Redis prefix key which would be used to store session key
 - use the same cookie variable name -> should be configurable, need to make sure
+  - laravel has `session.cookie` config var which could be changed to edit its cookie variable name
+- use the same serialization method -> require considerable configuration
 
 ## Alternative
 
