@@ -16,6 +16,19 @@ PHP by default provided a native [Session handling mechanism](https://www.php.ne
 
 All services managed using docker compose
 
-# Setup
+## Setup
 - `docker compose up`
 - website could be accessed at http://localhost:8000
+
+## Plan
+
+From my limited research, it seems that there are a couple of steps required to achieve this goal:
+- use the same backend for session driver in each frameworks, here we use Redis -> trivial
+- use the same Redis key format -> should be configurable, need to make sure
+- use the same serialization key -> require considerable configuration
+- use the same cookie variable name -> should be configurable, need to make sure
+
+## Alternative
+
+If its later revealed that the above steps is impossible or prohibitively difficult, than here I list a couple alternative solutions:
+- use OAuth 2.0 or OpenID Connection to achieve synced user session
