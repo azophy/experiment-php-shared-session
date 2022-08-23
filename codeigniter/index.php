@@ -89,6 +89,8 @@ switch (ENVIRONMENT)
 		exit(1); // EXIT_ERROR
 }
 
+ini_set('session.serialize_handler', 'php_serialize');
+
 /*
  *---------------------------------------------------------------
  * SYSTEM DIRECTORY NAME

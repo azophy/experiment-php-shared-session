@@ -199,4 +199,8 @@ return [
 
     'same_site' => 'lax',
 
+    // undocumented settings to change Laravel's Session Storage serialization strategy
+    // ref; https://github.com/laravel/framework/pull/40595
+    'serialization' => 'php',
+
 ];
