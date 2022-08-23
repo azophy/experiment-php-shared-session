@@ -16,10 +16,17 @@ class Sesi extends CI_Controller {
 	{
 		if (!$this->session->random_value)
 			$this->session->random_value = random_string('alnum', 16);
+        $output = json_encode([
+            'random_value' => $this->session->random_value,
+		    'dat_time' => date('Y-m-d H:i:s'),
+		    'session_id' => $this->session->session_id,
+		    'reset_url' => site_url('sesi/reset'),
+            'session_data' => $this->session,
+        ]);
 
-		echo "Random value in session: " . $this->session->random_value;
-		echo "<br/>Date Time: " . date('Y-m-d H:i:s');
-		echo "<br/><a href='" . site_url('sesi/reset') . "' target='_blank'>Reset value</a>";
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($output);
 	}
 
 	public function reset()

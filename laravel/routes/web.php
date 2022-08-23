@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    session([
+        'random_laravel_value' => \Illuminate\Support\Str::random(16)
+    ]);
+
     return response()->json([
         'random_value_in_sesson' => session('random_value'),
+        'random_value_by_laravel' => session('random_laravel_value'),
+        'session_id' => session()->getId(),
+        'session_data' => session()->all(),
     ]);
 });

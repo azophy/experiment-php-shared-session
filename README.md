@@ -16,6 +16,21 @@ PHP by default provided a native [Session handling mechanism](https://www.php.ne
 
 All services managed using docker compose
 
-# Setup
+## Setup
 - `docker compose up`
 - website could be accessed at http://localhost:8000
+
+## Plan
+
+From my limited research, it seems that there are a couple of steps required to achieve this goal:
+- use the same backend for session driver in each frameworks, here we use Redis -> done
+- use the same Redis key format -> should be configurable, need to make sure
+  - laravel has `database.redis.prefix` config var which could be changed to edit its Redis prefix key which would be used to store session key
+- use the same cookie variable name -> should be configurable, need to make sure
+  - laravel has `session.cookie` config var which could be changed to edit its cookie variable name
+- use the same serialization method -> require considerable configuration
+
+## Alternative
+
+If its later revealed that the above steps is impossible or prohibitively difficult, than here I list a couple alternative solutions:
+- use OAuth 2.0 or OpenID Connection to achieve synced user session
