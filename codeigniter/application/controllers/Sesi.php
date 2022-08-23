@@ -34,4 +34,26 @@ class Sesi extends CI_Controller {
 			$this->session->random_value = random_string('alnum', 16);
 			echo "New random value: " . $this->session->random_value;
 	}
+
+    public function cek_laravel()
+    {
+        $ci_session = $this->input->cookie('ci_session');
+
+        $client = new GuzzleHttp\Client([
+            'base_uri' => 'http://web_laravel:8000/',
+        ]);
+        $response = $client->request('GET', '/', [
+            'headers' => [
+                'Cookie' => "ci_session=$ci_session",
+            ],
+        ]);
+
+        //$output = json_encode([
+        //]);
+        $output = $response->getBody()->getContents();
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($output);
+    }
 }
