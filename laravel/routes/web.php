@@ -22,5 +22,6 @@ Route::get('/', function () {
         'random_value_in_sesson' => session('random_value'),
         'random_value_by_laravel' => session('random_laravel_value'),
         'session_id' => session()->getId(),
+        'session_data' => session()->all(),
     ]);
 });
