@@ -18,7 +18,9 @@ All services managed using docker compose
 
 ## Setup
 - `docker compose up`
-- website could be accessed at http://localhost:8000
+- website could be accessed at :
+  - codeigniter: http://localhost:8000
+  - laravel: http://localhost:8000
 
 ## Plan
 
