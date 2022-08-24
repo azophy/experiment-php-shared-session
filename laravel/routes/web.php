@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,14 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
     session([
         'random_laravel_value' => \Illuminate\Support\Str::random(16)
     ]);
 
     return response()->json([
-        'random_value_in_sesson' => session('random_value'),
-        'random_value_by_laravel' => session('random_laravel_value'),
+        'cookies' => $request->cookie(),
         'session_id' => session()->getId(),
         'session_data' => session()->all(),
     ]);
