@@ -32,9 +32,44 @@ There are a couple of steps required to achieve this goal:
 - use the same cookie variable name
   - laravel has `session.cookie` config var which could be changed to edit its cookie variable name
 - make sure both has the same encryption setting for cookies
-  - disable cookie encryption in Laravel for session id cookie, as CodeIgniter doesn't encrypt session id cookie
+  - disable cookie encryption in Laravel for session id cookie, as CodeIgniter doesn't encrypt session id cookie. edit `$except` variable in `App\Http\Middleware\EncryptCookies.php` file.
 - use the same serialization method
   - change both framework to use PHP's `serializable()` method for session storage
+
+## Execution
+- One of the most challanging things to achieve this is to make sore both frameworks has the same serialization methods.
+    - Add the following line to CodeIgniter's `index.php` file:
+        ```
+        // in this repo, we add it at line 92
+        ini_set('session.serialize_handler', 'php_serialize');
+        ```
+    - Add the folllowing line to Laravel's `config/session.php` file:
+        ```
+        // undocumented settings to change Laravel's Session Storage serialization strategy
+        // ref; https://github.com/laravel/framework/pull/40595
+        'serialization' => 'php',
+        ```
+    - after that, we also need to modify Laravel framework library source file to make avoid repeated serialization, as Laravel by default serializa session data twice in Redis's storage. Edit file file `vendor/laravel/framework/src/Illuminate/Session/CacheBasedSessionHandler.php`, then replace both `read()` & `write()` method with:
+        ```PHP
+        public function read($sessionId): string
+        {
+            $result = $this->cache->get($sessionId, '');
+
+            // handle serialized data from codeigniter
+            return serialize($result) ;
+        }
+
+        public function write($sessionId, $data): bool
+        {
+            // revert serialized data from input so we avoid repeated serialization
+            $unserialized_data = unserialize($data);
+
+            return $this->cache->put($sessionId, $unserialized_data, $this->minutes * 60);
+        }
+        ```
+
+        unfortunately this changes is temporary as we directly editing the composer's vendor source file. The more permanent method is to fork Laravel's Framework repository and make a new private composer Package
+
 
 ## Alternative
 
