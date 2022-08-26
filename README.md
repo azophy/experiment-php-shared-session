@@ -7,11 +7,14 @@ When moving between different version, its often desirable to move gradually. So
 
 PHP by default provided a native [Session handling mechanism](https://www.php.net/manual/en/book.session.php). Basically each client which connected to a PHP server would be assigned a session ID which would be stored on the client's cookie storage. This session ID would persists between page loads, and could be used to look up session values stored by the server. This session ID would be shared by different paths under the same subdomain, thus theoritically could by accessed by different websites as long they shares the same subdomain. The remaining requirement would be to share the session data storages, which could be achieved by centralized session storage such as a Redis server.
 
+## NOTICE: ALTERNATIVE
+
+The method explored in this repo is quite "dirty" and tighly-coupled. Rather than using solution as demonstrated in this project, I think its better to use Federated Identity Management protocol (such as OAuth 2.0 or OpenID Connection) to synced user session. This should be the cleanest method to achieve this goal. It also allow for separated logics & concerns, thus achieve better encapsulation & modularity.
+
 ## Project description
 - 2 different website in PHP language utilizing different frameworks:
   - Laravel 9.0 under PHP 8.1
-	- CodeIgniter 3.1.8 under PHP 7.2
-- an Nginx server that acted as a public router to both websites
+  - CodeIgniter 3.1.8 under PHP 7.2
 - a Redis instance as shared session storage
 
 All services managed using docker compose
@@ -20,7 +23,7 @@ All services managed using docker compose
 - `docker compose up`
 - website could be accessed at :
   - codeigniter: http://localhost:8000
-  - laravel: http://localhost:8000
+  - laravel: http://localhost:8008
 
 ## Plan
 
@@ -70,9 +73,3 @@ There are a couple of steps required to achieve this goal:
 
         unfortunately this changes is temporary as we directly editing the composer's vendor source file. The more permanent method is to fork Laravel's Framework repository and make a new private composer Package
 
-
-## Alternative
-
-The method explored in this repo is quite "dirty" and tighly-coupled. Here I list a couple alternative solutions:
-- Use Federated Identity Management protocol (such as OAuth 2.0 or OpenID Connection) to synced user session
-  -> I think this is actually the cleanest method for this goal. This method actually enable separated logic & concern, thus achieve better encapsulation & modularity.
