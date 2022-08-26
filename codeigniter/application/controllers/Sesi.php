@@ -14,14 +14,38 @@ class Sesi extends CI_Controller {
 
 	public function index()
 	{
-		if (!$this->session->random_value)
-			$this->session->random_value = random_string('alnum', 16);
+		if (!$this->session->random_codeigniter_value)
+			$this->session->random_codeigniter_value = random_string('alnum', 16);
+        $ci_session_id = $this->session->session_id;
+
+        // retrieve data from laravel
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'http://web_laravel:8000/',
+        ]);
+        try {
+            $response = $client->request('GET', '/', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Cookie' => "ci_session=$ci_session_id",
+                ],
+            ]);
+            $result_string = $response->getBody()->getContents();
+            $laravel_result = json_decode($result_string, true);
+        } catch (\Exception $e) {
+            $laravel_result = [
+                'encounter error' => $e->getMessage(),
+            ];
+        }
+
+        // prepare output
         $output = json_encode([
-            'random_value' => $this->session->random_value,
-		    'dat_time' => date('Y-m-d H:i:s'),
-		    'session_id' => $this->session->session_id,
-		    'reset_url' => site_url('sesi/reset'),
-            'session_data' => $this->session,
+            'codeigniter_data' => [
+                'session_id' => $ci_session_id,
+                'session_data' => $this->session,
+                'date_time' => date('Y-m-d H:i:s'),
+                'reset_url' => site_url('sesi/reset'),
+            ],
+            'laravel_data' => $laravel_result,
         ]);
 
         return $this->output
