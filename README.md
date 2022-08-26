@@ -11,6 +11,8 @@ PHP by default provided a native [Session handling mechanism](https://www.php.ne
 
 The method explored in this repo is quite "dirty" and tighly-coupled. Rather than using solution as demonstrated in this project, I think its better to use Federated Identity Management protocol (such as OAuth 2.0 or OpenID Connection) to synced user session. This should be the cleanest method to achieve this goal. It also allow for separated logics & concerns, thus achieve better encapsulation & modularity.
 
+Other approach we could use is by storing our session directly in browser's cookie. In practice this would employ encrypted cookie storage or by utilizing JWT inside cookie. This approach is suitable especially for distributed applications such as under microservice architecture. However for regular monolith /fullstack application this approach may introduce additional complexity such as session validations & data leakage risks.
+
 ## Project description
 - 2 different website in PHP language utilizing different frameworks:
   - Laravel 9.0 under PHP 8.1
