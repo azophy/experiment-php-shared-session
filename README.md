@@ -16,6 +16,7 @@ The method explored in this repo is quite "dirty" and tighly-coupled. Rather tha
   - Laravel 9.0 under PHP 8.1
   - CodeIgniter 3.1.8 under PHP 7.2
 - a Redis instance as shared session storage
+- CodeIgniter would emulate a reverse proxy to Laravel's Endpoint. In production, you should use proper reverse proxy such Nginx or HAproxy
 
 All services managed using docker compose
 
@@ -28,6 +29,8 @@ All services managed using docker compose
 ## Plan
 
 There are a couple of steps required to achieve this goal:
+- make sure both apps is served under the same domain/host
+  - this is required to make sure both apps could read the same cookie data
 - use the same session driver for both frameworks
   - in this project we use Redis
 - use the same Redis key format
