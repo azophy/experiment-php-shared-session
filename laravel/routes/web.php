@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function (Request $request) {
-    session([
-        'random_laravel_value' => \Illuminate\Support\Str::random(16)
-    ]);
+    if (!session('random_laravel_value', false))
+        session([
+            'random_laravel_value' => \Illuminate\Support\Str::random(16)
+        ]);
 
     return response()->json([
         'cookies' => $request->cookie(),
+        'date_time' => date('Y-m-d H:i:s'),
         'session_id' => session()->getId(),
         'session_data' => session()->all(),
     ]);

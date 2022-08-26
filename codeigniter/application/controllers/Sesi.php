@@ -42,7 +42,7 @@ class Sesi extends CI_Controller {
             'codeigniter_data' => [
                 'session_id' => $ci_session_id,
                 'session_data' => $this->session,
-                'dat_time' => date('Y-m-d H:i:s'),
+                'date_time' => date('Y-m-d H:i:s'),
                 'reset_url' => site_url('sesi/reset'),
             ],
             'laravel_data' => $laravel_result,
